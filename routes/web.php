@@ -32,6 +32,9 @@ use App\Http\Controllers\User\DashboardController as UserDashboard;
 Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->group(function () {
     Route::get('/dashboard', [SuperAdminDashboard::class, 'index'])->name('superadmin.dashboard');
     Route::get('/users', [UserManagement::class, 'users'])->name('superadmin.users');
+
+
+    
     Route::get('/roles', [RoleManagement::class, 'roles'])->name('superadmin.roles');
     Route::get('/permissions', [PermissionManagement::class, 'permissions'])->name('superadmin.permissions');
 

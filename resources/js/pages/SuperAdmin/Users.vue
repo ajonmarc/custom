@@ -4,10 +4,12 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
 import PlaceholderPattern from '../../components/PlaceholderPattern.vue';
+import  ModalForm  from '../../components/modals/ModalForm.vue' 
+import  DeleteConfirmModal  from '../../components/DeleteConfirmModal.vue'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Userrrrrrrrrrr Management',
+        title: 'User Management',
     },
 ];
 </script>
