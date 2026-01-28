@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 
 defineProps<{
@@ -13,19 +20,23 @@ defineEmits(['submit'])
 
 <template>
   <Dialog>
-    <!-- Trigger -->
     <DialogTrigger as-child>
-      <slot name="trigger" />
+      <!-- 
+        Use <slot> with a fallback button.
+        Parent can still override with <template #trigger> ... </template>
+      -->
+      <slot name="trigger">
+        <Button variant="outline">Open {{ title }}</Button>
+      </slot>
     </DialogTrigger>
 
-    <!-- Modal -->
     <DialogContent>
       <DialogHeader>
         <DialogTitle>{{ title }}</DialogTitle>
       </DialogHeader>
 
-      <!-- Form Body -->
       <form @submit.prevent="$emit('submit')" class="space-y-4">
+        <!-- Content fields passed from parent via default slot -->
         <slot />
 
         <DialogFooter class="gap-2">
@@ -33,10 +44,7 @@ defineEmits(['submit'])
             Cancel
           </Button>
 
-          <Button
-            type="submit"
-            :disabled="loading"
-          >
+          <Button type="submit" :disabled="loading">
             {{ submitLabel ?? 'Save' }}
           </Button>
         </DialogFooter>
