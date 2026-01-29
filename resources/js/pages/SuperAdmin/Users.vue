@@ -21,8 +21,15 @@ interface User {
 }
 
 interface Props {
-    users: User[];
+    users: {
+        data: User[]
+        from: number
+        to: number
+        total: number
+        links: any[]
+    }
     roles: string[];
+
 }
 
 const props = defineProps<Props>();
@@ -210,6 +217,14 @@ const resetForm = () => {
     formLoading.value = false;
 };
 
+
+const goToPage = (url: string) => {
+    router.get(url, {}, {
+        preserveScroll: true,
+        preserveState: true,
+    })
+}
+
 </script>
 
 <template>
@@ -217,17 +232,22 @@ const resetForm = () => {
     <Head title="User Management" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        User Management
+
 
         <div class="p-6">
             <h1 class="text-2xl font-bold mb-4">User Management</h1>
-
+<!-- 
             <Button class="w-full sm:w-auto mt-3" @click="openCreate">
                 Create New User
-            </Button>
+            </Button> -->
 
             <div class="mt-6">
-                <AppTable :items="users" :columns="tableColumns">
+                <AppTable :items="users.data" :columns="tableColumns" :pagination="users" @paginate="goToPage">
+                    <template #actions>
+                        <Button @click="openCreate">
+                            Create New User
+                        </Button>
+                    </template>
                     <template #row="{ item }">
                         <td class="px-6 py-4 font-medium text-heading whitespace-nowrap">
                             {{ item.name }}
@@ -256,6 +276,9 @@ const resetForm = () => {
                         </td>
                     </template>
                 </AppTable>
+
+
+
             </div>
         </div>
 

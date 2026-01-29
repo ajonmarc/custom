@@ -12,27 +12,30 @@ use Spatie\Permission\Models\Role;
 
 class UserManagementController extends Controller
 {
-    public function users()
-    {
-        $users = User::with('roles')->latest()->get()->map(function ($user) {
+public function users()
+{
+    $users = User::with('roles')
+        ->latest()
+        ->paginate(10)
+        ->through(function ($user) {
             return [
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'roles' => $user->getRoleNames()->first() ?? '', // Get first role name
+                'roles' => $user->getRoleNames()->first() ?? '',
                 'created_at' => $user->created_at->format('M d, Y'),
                 'status' => 'Active',
             ];
         });
 
-        // Get all roles for dropdown
-        $roles = Role::pluck('name')->toArray();
+    $roles = Role::pluck('name')->toArray();
 
-        return Inertia::render('SuperAdmin/Users', [
-            'users' => $users,
-            'roles' => $roles,
-        ]);
-    }
+    return Inertia::render('SuperAdmin/Users', [
+        'users' => $users,
+        'roles' => $roles,
+    ]);
+}
+
 
     public function store(Request $request)
     {
