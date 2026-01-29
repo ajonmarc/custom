@@ -230,6 +230,7 @@ const goToPage = (url: string) => {
 </script>
 
 <template>
+
     <Head title="Roles Management" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
@@ -253,10 +254,7 @@ const goToPage = (url: string) => {
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span 
-                                v-if="item.type"
-                                class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800"
-                            >
+                            <span v-if="item.type" class="px-2 py-1 text-xs rounded-full bg-purple-100 text-purple-800">
                                 {{ item.type }}
                             </span>
                             <span v-else class="text-gray-400 text-sm">-</span>
@@ -268,17 +266,12 @@ const goToPage = (url: string) => {
                         </td>
                         <td class="px-6 py-4">
                             <div class="flex flex-wrap gap-1">
-                                <span
-                                    v-for="permission in item.permissions.slice(0, 3)"
-                                    :key="permission.id"
-                                    class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800"
-                                >
+                                <span v-for="permission in item.permissions.slice(0, 3)" :key="permission.id"
+                                    class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
                                     {{ permission.name }}
                                 </span>
-                                <span
-                                    v-if="item.permissions.length > 3"
-                                    class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800"
-                                >
+                                <span v-if="item.permissions.length > 3"
+                                    class="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-800">
                                     +{{ item.permissions.length - 3 }} more
                                 </span>
                             </div>
@@ -305,13 +298,11 @@ const goToPage = (url: string) => {
         </div>
 
         <!-- Create/Edit Modal -->
-        <ModalForm
-            v-model:isOpen="showCreateModal"
-            :title="editingRole ? 'Edit Role' : 'Create New Role'"
-            :loading="formLoading"
-            max-width="3xl"
-            @submit="submitForm"
-        >
+        <ModalForm v-model:isOpen="showCreateModal" :title="editingRole ? 'Edit Role' : 'Create New Role'"
+            :loading="formLoading" max-width="5xl"
+  form-width="4xl"       
+  form-height="full" @submit="submitForm">
+
             <!-- 2-Column Grid Layout -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Left Column -->
@@ -320,14 +311,10 @@ const goToPage = (url: string) => {
                         <label class="block text-sm font-medium text-heading mb-1">
                             Role Name <span class="text-red-600">*</span>
                         </label>
-                        <input
-                            v-model="formData.name"
-                            type="text"
+                        <input v-model="formData.name" type="text"
                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                             :class="formErrors.name ? 'border-red-500' : 'border-default'"
-                            placeholder="e.g., Admin, Editor, Viewer"
-                            required
-                        />
+                            placeholder="e.g., Admin, Editor, Viewer" required />
                         <p v-if="formErrors.name" class="text-red-600 text-sm mt-1">{{ formErrors.name }}</p>
                     </div>
 
@@ -335,11 +322,9 @@ const goToPage = (url: string) => {
                         <label class="block text-sm font-medium text-heading mb-1">
                             Type
                         </label>
-                        <select
-                            v-model="formData.type"
+                        <select v-model="formData.type"
                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                            :class="formErrors.type ? 'border-red-500' : 'border-default'"
-                        >
+                            :class="formErrors.type ? 'border-red-500' : 'border-default'">
                             <option value="">Select a type (optional)</option>
                             <option v-for="type in roleTypes" :key="type" :value="type">
                                 {{ type.charAt(0).toUpperCase() + type.slice(1) }}
@@ -355,14 +340,12 @@ const goToPage = (url: string) => {
                         <label class="block text-sm font-medium text-heading mb-1">
                             Description
                         </label>
-                        <textarea
-                            v-model="formData.description"
-                            rows="4"
+                        <textarea v-model="formData.description" rows="4"
                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                             :class="formErrors.description ? 'border-red-500' : 'border-default'"
-                            placeholder="Brief description of this role's purpose..."
-                        ></textarea>
-                        <p v-if="formErrors.description" class="text-red-600 text-sm mt-1">{{ formErrors.description }}</p>
+                            placeholder="Brief description of this role's purpose..."></textarea>
+                        <p v-if="formErrors.description" class="text-red-600 text-sm mt-1">{{ formErrors.description }}
+                        </p>
                     </div>
                 </div>
 
@@ -371,22 +354,14 @@ const goToPage = (url: string) => {
                     <label class="block text-sm font-medium text-heading mb-2">
                         Permissions <span class="text-red-600">*</span>
                     </label>
-                    <div 
-                        class="border rounded-md p-4 h-[320px] overflow-y-auto"
-                        :class="formErrors.permissions ? 'border-red-500' : 'border-default'"
-                    >
+                    <div class="border rounded-md p-4 h-[320px] overflow-y-auto"
+                        :class="formErrors.permissions ? 'border-red-500' : 'border-default'">
                         <div class="space-y-2">
-                            <label
-                                v-for="permission in permissions"
-                                :key="permission.id"
-                                class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded"
-                            >
-                                <input
-                                    type="checkbox"
-                                    :checked="isPermissionSelected(permission.id)"
+                            <label v-for="permission in permissions" :key="permission.id"
+                                class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-2 rounded">
+                                <input type="checkbox" :checked="isPermissionSelected(permission.id)"
                                     @change="togglePermission(permission.id)"
-                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                                />
+                                    class="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary" />
                                 <span class="text-sm text-heading">{{ permission.name }}</span>
                             </label>
                         </div>
@@ -400,11 +375,7 @@ const goToPage = (url: string) => {
         </ModalForm>
 
         <!-- Delete Modal -->
-        <DeleteConfirmModal
-            v-model:isOpen="showDeleteModal"
-            title="Delete Role"
-            :itemName="deletingRole?.name || ''"
-            @confirm="handleDelete"
-        />
+        <DeleteConfirmModal v-model:isOpen="showDeleteModal" title="Delete Role" :itemName="deletingRole?.name || ''"
+            @confirm="handleDelete" />
     </AppLayout>
 </template>

@@ -231,6 +231,9 @@ const goToPage = (url: string) => {
             v-model:isOpen="showCreateModal"
             :title="editingPermission ? 'Edit Permission' : 'Create New Permission'"
             :loading="formLoading"
+     max-width="5xl"
+  form-width="4xl"       
+  form-height="full"
             @submit="submitForm"
         >
             <div class="space-y-4">

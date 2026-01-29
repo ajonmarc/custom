@@ -3,28 +3,27 @@
   <Transition name="modal-fade">
     <div
       v-if="isOpen"
-      class="fixed inset-0 z-50 flex items-center justify-center px-4"
+      class="fixed inset-0 z-50 flex items-center justify-center px-4 sm:px-6"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="delete-modal-title"
     >
       <!-- Backdrop -->
       <div
-        class="absolute inset-0 bg-black/60 backdrop-blur-sm"
+        class="absolute inset-0 bg-gray-900/65 backdrop-blur-sm"
         @click="close"
       ></div>
 
       <!-- Modal -->
       <div
         ref="modalRef"
-        class="relative z-10 w-full max-w-md rounded-xl bg-neutral-primary shadow-2xl border border-red-500/30"
+        class="relative z-10 w-full max-w-md rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden"
       >
-        <!-- Header -->
-        <div class="flex items-start gap-4 px-6 pt-6">
-          <div
-            class="flex h-11 w-11 items-center justify-center rounded-full bg-red-100 text-red-600"
-          >
-            <!-- Danger Icon -->
-            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- Header / Warning Area -->
+        <div class="flex items-start gap-4 px-6 pt-6 pb-4">
+          <!-- Warning Icon -->
+          <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -35,30 +34,27 @@
           </div>
 
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-red-600">
+            <h3 id="delete-modal-title" class="text-xl font-semibold text-gray-900">
               {{ title || 'Confirm Deletion' }}
             </h3>
-            <p class="mt-2 text-sm text-body">
+            <p class="mt-2 text-sm text-gray-600">
               <slot>
                 Are you sure you want to delete
-                <strong class="text-heading">
-                  {{ itemName || 'this item' }}
-                </strong
+                <strong class="font-medium text-gray-900">{{ itemName || 'this item' }}</strong
                 >?
-                <br />
-                <span class="text-red-500 font-medium">
-                  This action cannot be undone.
-                </span>
               </slot>
+            </p>
+            <p class="mt-1.5 text-sm font-medium text-red-600">
+              This action cannot be undone.
             </p>
           </div>
         </div>
 
-        <!-- Actions -->
-        <div class="mt-6 flex justify-end gap-3 border-t border-default px-6 py-4">
+        <!-- Footer / Actions -->
+        <div class="flex justify-end gap-3 border-t border-gray-200 px-6 py-5 bg-gray-50">
           <button
             type="button"
-            class="rounded-md border border-default px-4 py-2 text-body hover:bg-neutral-secondary-soft transition"
+            class="rounded-lg border border-gray-300 px-5 py-2.5 text-gray-700 font-medium hover:bg-gray-100 hover:text-gray-900 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
             @click="close"
           >
             Cancel
@@ -66,7 +62,7 @@
 
           <button
             type="button"
-            class="flex items-center gap-2 rounded-md bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition disabled:opacity-60"
+            class="flex items-center gap-2 rounded-lg bg-red-600 px-6 py-2.5 text-white font-medium hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
             :disabled="loading"
             @click="$emit('confirm')"
           >
@@ -78,11 +74,11 @@
           </button>
         </div>
 
-        <!-- Close Button -->
+        <!-- Close button (top-right) -->
         <button
-          class="absolute right-4 top-4 text-body hover:text-heading"
+          class="absolute right-4 top-4 text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1"
           @click="close"
-          aria-label="Close modal"
+          aria-label="Close confirmation dialog"
         >
           ✕
         </button>
@@ -91,26 +87,29 @@
   </Transition>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { watch, onUnmounted, ref, nextTick } from 'vue'
 
-const props = defineProps({
-  isOpen: Boolean,
-  title: String,
-  itemName: String,
-  loading: Boolean,
-})
+const props = defineProps<{
+  isOpen: boolean
+  title?: string
+  itemName?: string
+  loading?: boolean
+}>()
 
-const emit = defineEmits(['update:isOpen', 'close', 'confirm'])
+const emit = defineEmits<{
+  (e: 'update:isOpen', value: boolean): void
+  (e: 'close'): void
+  (e: 'confirm'): void
+}>()
 
-const modalRef = ref(null)
+const modalRef = ref<HTMLElement | null>(null)
 
 const close = () => {
   emit('update:isOpen', false)
   emit('close')
 }
 
-/* Lock body scroll */
 watch(() => props.isOpen, async (open) => {
   document.body.style.overflow = open ? 'hidden' : ''
   if (open) {
@@ -119,27 +118,28 @@ watch(() => props.isOpen, async (open) => {
   }
 })
 
-/* Escape key support */
-const onEscape = (e) => {
-  if (e.key === 'Escape' && props.isOpen) close()
+const handleEscape = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && props.isOpen) {
+    close()
+  }
 }
-window.addEventListener('keydown', onEscape)
 
+window.addEventListener('keydown', handleEscape)
 onUnmounted(() => {
   document.body.style.overflow = ''
-  window.removeEventListener('keydown', onEscape)
+  window.removeEventListener('keydown', handleEscape)
 })
 </script>
 
 <style scoped>
 .modal-fade-enter-active,
 .modal-fade-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
-  transform: scale(0.95);
+  transform: translateY(12px) scale(0.975);
 }
 </style>
