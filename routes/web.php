@@ -38,8 +38,15 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->group(func
     Route::delete('/users/{user}', [UserManagement::class, 'destroy'])->name('superadmin.users.destroy'); // Add
     
     Route::get('/roles', [RoleManagement::class, 'roles'])->name('superadmin.roles');
-    Route::get('/permissions', [PermissionManagement::class, 'permissions'])->name('superadmin.permissions');
+        Route::post('/roles', [RoleManagement::class, 'store'])->name('superadmin.roles.store');
+    Route::put('/roles/{role}', [RoleManagement::class, 'update'])->name('superadmin.roles.update');
+    Route::delete('/roles/{role}', [RoleManagement::class, 'destroy'])->name('superadmin.roles.destroy');
 
+    
+    Route::get('/permissions', [PermissionManagement::class, 'permissions'])->name('superadmin.permissions');
+    Route::post('/permissions', [PermissionManagement::class, 'store'])->name('superadmin.permissions.store');
+    Route::put('/permissions/{permission}', [PermissionManagement::class, 'update'])->name('superadmin.permissions.update');
+    Route::delete('/permissions/{permission}', [PermissionManagement::class, 'destroy'])->name('superadmin.permissions.destroy');
 
 });
 

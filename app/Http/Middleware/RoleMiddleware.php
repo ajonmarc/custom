@@ -8,14 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleMiddleware
 {
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    public function handle(Request $request, Closure $next, string ...$roles): Response
     {
-        if (! $request->user()) {
-            abort(403);
+        // Check if user is authenticated
+        if (!auth()->check()) {
+            abort(401, 'Please log in to continue.');
         }
 
-        if (! $request->user()->hasAnyRole($roles)) {
-            abort(403, 'Unauthorized.');
+        // Check if user has required role
+        if (!$request->user()->hasAnyRole($roles)) {
+            abort(403, 'You do not have the required permissions to access this resource.');
         }
 
         return $next($request);

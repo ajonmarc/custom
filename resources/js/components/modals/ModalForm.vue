@@ -17,7 +17,17 @@
       <!-- Modal -->
       <div
         ref="modalRef"
-        class="relative z-10 w-full max-w-lg rounded-xl bg-neutral-primary shadow-2xl border border-default"
+        class="relative z-10 w-full rounded-xl bg-neutral-primary shadow-2xl border border-default"
+        :class="[
+          maxWidth === 'sm' && 'max-w-sm',
+          maxWidth === 'md' && 'max-w-md',
+          maxWidth === 'lg' && 'max-w-lg',
+          maxWidth === 'xl' && 'max-w-xl',
+          maxWidth === '2xl' && 'max-w-2xl',
+          maxWidth === '3xl' && 'max-w-3xl',
+          maxWidth === '4xl' && 'max-w-4xl',
+          maxWidth === '5xl' && 'max-w-5xl',
+        ]"
       >
         <!-- Header -->
         <div class="flex items-start gap-4 px-6 pt-6 pb-4 border-b border-default">
@@ -44,7 +54,7 @@
         </div>
 
         <!-- Content -->
-        <div class="px-6 py-5">
+        <div class="px-6 py-5 max-h-[calc(100vh-200px)] overflow-y-auto">
           <slot />
         </div>
 
@@ -89,6 +99,11 @@ const props = defineProps({
   description: { type: String, default: '' },
   submitLabel: { type: String, default: 'Save' },
   loading: { type: Boolean, default: false },
+  maxWidth: { 
+    type: String, 
+    default: 'lg',
+    validator: (value) => ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl'].includes(value)
+  },
 })
 
 const emit = defineEmits(['update:isOpen', 'close', 'submit'])
