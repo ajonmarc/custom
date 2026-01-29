@@ -33,7 +33,9 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->group(func
     Route::get('/dashboard', [SuperAdminDashboard::class, 'index'])->name('superadmin.dashboard');
     Route::get('/users', [UserManagement::class, 'users'])->name('superadmin.users');
 
-
+      Route::post('/users', [UserManagement::class, 'store'])->name('superadmin.users.store'); // Add
+    Route::put('/users/{user}', [UserManagement::class, 'update'])->name('superadmin.users.update'); // Add
+    Route::delete('/users/{user}', [UserManagement::class, 'destroy'])->name('superadmin.users.destroy'); // Add
     
     Route::get('/roles', [RoleManagement::class, 'roles'])->name('superadmin.roles');
     Route::get('/permissions', [PermissionManagement::class, 'permissions'])->name('superadmin.permissions');
