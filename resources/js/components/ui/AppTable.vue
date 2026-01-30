@@ -9,23 +9,23 @@
         v-model="search"
         type="text"
         placeholder="Search..."
-        class="w-full sm:w-64 px-3 py-2 border border-default rounded-md text-sm focus:ring-2 focus:ring-primary"
+        class="w-full sm:w-64 px-3 py-2 rounded-md border border-input bg-background text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       />
 
       <slot name="actions" />
     </div>
 
     <!-- Table -->
-    <div class="relative overflow-x-auto rounded-xl border border-default bg-neutral-primary shadow-sm">
+    <div class="relative overflow-x-auto rounded-xl border border-border bg-background shadow-sm">
       <div
         v-if="loading"
-        class="absolute inset-0 z-10 flex items-center justify-center bg-neutral-primary/70 backdrop-blur-sm"
+        class="absolute inset-0 z-10 flex items-center justify-center bg-background/80 backdrop-blur-sm"
       >
         <span class="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent"></span>
       </div>
 
-      <table class="w-full text-sm text-left text-body">
-        <thead class="bg-neutral-secondary-soft border-b border-default text-xs uppercase tracking-wide">
+      <table class="w-full text-sm text-left text-foreground">
+        <thead class="bg-muted/40 border-b border-border text-xs uppercase tracking-wide text-muted-foreground">
           <tr>
             <th
               v-for="col in columns"
@@ -47,13 +47,13 @@
           <tr
             v-for="(item, index) in paginatedItems"
             :key="(item as any).id ?? index"
-            class="border-b border-default hover:bg-neutral-secondary-soft/60"
+            class="border-b border-border hover:bg-muted/50 transition-colors"
           >
             <slot name="row" :item="item" :index="index" />
           </tr>
 
           <tr v-if="!paginatedItems.length && !loading">
-            <td :colspan="columns.length" class="px-6 py-10 text-center text-muted">
+            <td :colspan="columns.length" class="px-6 py-10 text-center text-muted-foreground">
               No records found
             </td>
           </tr>
@@ -62,22 +62,21 @@
     </div>
 
     <!-- Pagination -->
-    <div v-if="pagination" class="flex justify-between items-center text-sm">
-      <span class="text-muted">
+    <div v-if="pagination" class="flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+      <span>
         Showing {{ pagination.from }}–{{ pagination.to }} of {{ pagination.total }}
       </span>
 
-      <div class="flex gap-1">
-     <button
-  v-for="link in pagination.links"
-  :key="link.label"
-  v-html="link.label"
-  :disabled="!link.url"
-  @click="link.url && $emit('paginate', link.url)"
-  class="px-3 py-1 rounded-md border border-default hover:bg-neutral-secondary-soft disabled:opacity-50"
-  :class="{ 'bg-primary text-white': link.active }"
-/>
-
+      <div class="flex flex-wrap gap-1">
+        <button
+          v-for="link in pagination.links"
+          :key="link.label"
+          v-html="link.label"
+          :disabled="!link.url"
+          @click="link.url && $emit('paginate', link.url)"
+          class="px-3 py-1.5 rounded-md border border-input hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:pointer-events-none transition-colors"
+          :class="{ 'bg-primary text-primary-foreground hover:bg-primary/90': link.active }"
+        />
       </div>
     </div>
   </div>

@@ -1,3 +1,5 @@
+//resources/js/pages/SuperAdmin/Users.vue
+
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
 import { ref } from 'vue'
@@ -9,6 +11,8 @@ import ModalForm from '../../components/modals/ModalForm.vue'
 import DeleteConfirmModal from '../../components/modals/ModalConfirmDeletion.vue'
 import { router } from '@inertiajs/vue3'
 import { useToast } from 'vue-toastification'
+
+
 const toast = useToast()
 
 interface User {
@@ -236,7 +240,7 @@ const goToPage = (url: string) => {
 
         <div class="p-6">
             <h1 class="text-2xl font-bold mb-4">User Management</h1>
-<!-- 
+            <!-- 
             <Button class="w-full sm:w-auto mt-3" @click="openCreate">
                 Create New User
             </Button> -->
@@ -320,20 +324,24 @@ const goToPage = (url: string) => {
                         :required="!editingUser" />
                     <p v-if="formErrors.password" class="text-red-600 text-sm mt-1">{{ formErrors.password }}</p>
                 </div>
-
                 <div>
-                    <label class="block text-sm font-medium text-heading mb-1">
-                        Role <span class="text-red-600">*</span>
+                    <label class="block text-sm font-medium text-foreground mb-1">
+                        Role <span class="text-destructive">*</span>
                     </label>
-                    <select v-model="formData.role"
-                        class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
-                        :class="formErrors.role ? 'border-red-500' : 'border-default'" required>
-                        <option value="">Select a role</option>
+
+                    <select v-model="formData.role" class="w-full px-3 py-2 border rounded-md bg-background text-foreground
+           focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2
+           disabled:cursor-not-allowed disabled:opacity-50"
+                        :class="formErrors.role ? 'border-destructive' : 'border-input'" required>
+                        <option value="" class="text-muted-foreground">Select a role</option>
                         <option v-for="role in roles" :key="role" :value="role">
                             {{ role.charAt(0).toUpperCase() + role.slice(1) }}
                         </option>
                     </select>
-                    <p v-if="formErrors.role" class="text-red-600 text-sm mt-1">{{ formErrors.role }}</p>
+
+                    <p v-if="formErrors.role" class="text-destructive text-sm mt-1">
+                        {{ formErrors.role }}
+                    </p>
                 </div>
             </div>
         </ModalForm>

@@ -1,3 +1,4 @@
+//resources/js/components/DeleteUser.vue
 <script setup lang="ts">
 import { Form } from '@inertiajs/vue3';
 import { useTemplateRef } from 'vue';
@@ -40,7 +41,7 @@ const passwordInput = useTemplateRef('passwordInput');
             <Dialog>
                 <DialogTrigger as-child>
                     <Button variant="destructive" data-test="delete-user-button"
-                        >Delete account</Button
+                        >Delete accountttttttttttttttttttt</Button
                     >
                 </DialogTrigger>
                 <DialogContent>
@@ -64,7 +65,7 @@ const passwordInput = useTemplateRef('passwordInput');
                                 resources and data will also be permanently
                                 deleted. Please enter your password to confirm
                                 you would like to permanently delete your
-                                account.
+                                account............
                             </DialogDescription>
                         </DialogHeader>
 
@@ -109,6 +110,6 @@ const passwordInput = useTemplateRef('passwordInput');
                     </Form>
                 </DialogContent>
             </Dialog>
-        </div>
+        </div>  
     </div>
 </template>

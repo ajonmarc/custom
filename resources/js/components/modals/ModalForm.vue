@@ -1,4 +1,4 @@
-<!-- resources/js/Components/UI/ModalForm.vue -->
+//resources/js/components/modals/ModalForm.vue
 <template>
   <Transition name="modal-fade">
     <div
@@ -10,14 +10,14 @@
     >
       <!-- Backdrop -->
       <div
-        class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"
+        class="absolute inset-0 bg-gray-950/65 backdrop-blur-sm dark:bg-black/65"
         @click="close"
       ></div>
 
       <!-- Modal container -->
       <div
         ref="modalRef"
-        class="relative z-10 w-full rounded-2xl bg-white shadow-2xl border border-gray-200 overflow-hidden"
+        class="relative z-10 w-full rounded-2xl bg-white shadow-2xl border border-gray-200/80 dark:border-gray-800 dark:bg-gray-950 overflow-hidden"
         :class="[
           maxWidth === 'sm' && 'max-w-sm',
           maxWidth === 'md' && 'max-w-md',
@@ -31,21 +31,21 @@
         ]"
       >
         <!-- Header -->
-        <div class="flex items-center justify-between px-6 pt-5 pb-4 border-b border-gray-200">
+        <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-gray-200/70 dark:border-gray-800/70">
           <div class="flex items-center gap-3">
             <slot name="icon" />
             <div>
-              <h3 id="modal-title" class="text-xl font-semibold text-gray-900">
+              <h3 id="modal-title" class="text-xl font-semibold text-gray-900 dark:text-gray-100">
                 {{ title }}
               </h3>
-              <p v-if="description" class="mt-1 text-sm text-gray-600">
+              <p v-if="description" class="mt-1.5 text-sm text-gray-600 dark:text-gray-400">
                 {{ description }}
               </p>
             </div>
           </div>
 
           <button
-            class="text-gray-500 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-400 rounded-full p-1.5 transition"
+            class="text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-full p-1.5 transition"
             @click="close"
             aria-label="Close modal"
           >
@@ -53,7 +53,7 @@
           </button>
         </div>
 
-        <!-- Scrollable content area with controlled height & width -->
+        <!-- Scrollable content area -->
         <div
           class="overflow-y-auto"
           :class="[
@@ -66,7 +66,6 @@
           ]"
         >
           <div class="px-6 py-6">
-            <!-- Form content wrapper – controls width -->
             <div
               class="mx-auto w-full"
               :class="[
@@ -83,7 +82,6 @@
                 formWidth === 'full' && 'max-w-full',
               ]"
             >
-              <!-- Default slot = your form content -->
               <slot />
             </div>
           </div>
@@ -91,12 +89,12 @@
 
         <!-- Footer -->
         <div
-          class="flex justify-end gap-3 border-t border-gray-200 px-6 py-4 bg-gray-50"
+          class="flex justify-end gap-3 px-6 py-5 bg-gray-50/80 dark:bg-gray-900/40 border-t border-gray-200/70 dark:border-gray-800/70"
         >
           <slot name="footer">
             <button
               type="button"
-              class="rounded-lg border border-gray-300 px-5 py-2.5 text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition font-medium"
+              class="rounded-lg border border-gray-300 dark:border-gray-700 px-5 py-2.5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 transition font-medium focus:outline-none focus:ring-2 focus:ring-gray-400 dark:focus:ring-gray-600"
               @click="close"
             >
               Cancel
@@ -104,7 +102,7 @@
 
             <button
               type="button"
-              class="flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-white hover:bg-blue-700 disabled:opacity-60 transition font-medium shadow-sm"
+              class="flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-2.5 text-white hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 disabled:opacity-60 transition font-medium shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 dark:focus:ring-offset-gray-950"
               :disabled="loading"
               @click="$emit('submit')"
             >
@@ -122,6 +120,7 @@
 </template>
 
 <script setup>
+// ... exactly the same script (no changes)
 import { watch, onUnmounted, ref, nextTick } from 'vue'
 
 const props = defineProps({
@@ -131,21 +130,18 @@ const props = defineProps({
   submitLabel: { type: String, default: 'Save' },
   loading: { type: Boolean, default: false },
 
-  // Modal container width
   maxWidth: {
     type: String,
     default: 'lg',
     validator: v => ['sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl'].includes(v)
   },
 
-  // Inner form content width
   formWidth: {
     type: String,
     default: 'md',
     validator: v => ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl', '5xl', '6xl', 'full'].includes(v)
   },
 
-  // Inner scrollable content height
   formHeight: {
     type: String,
     default: 'auto',
@@ -184,12 +180,12 @@ onUnmounted(() => {
 <style scoped>
 .modal-fade-enter-active,
 .modal-fade-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .modal-fade-enter-from,
 .modal-fade-leave-to {
   opacity: 0;
-  transform: translateY(16px) scale(0.97);
+  transform: translateY(10px) scale(0.98);
 }
 </style>

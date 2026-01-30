@@ -1,3 +1,4 @@
+//resources/js/pages/settings/Profile.vue
 <script setup lang="ts">
 import { Form, Head, Link, usePage } from '@inertiajs/vue3';
 import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
@@ -65,7 +66,7 @@ const user = page.props.auth.user;
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="email">Email address</Label>
+                        <Label for="email">Email addresssss</Label>
                         <Input
                             id="email"
                             type="email"
@@ -96,7 +97,7 @@ const user = page.props.auth.user;
                             class="mt-2 text-sm font-medium text-green-600"
                         >
                             A new verification link has been sent to your email
-                            address.
+                            address..........
                         </div>
                     </div>
 
@@ -117,7 +118,7 @@ const user = page.props.auth.user;
                                 v-show="recentlySuccessful"
                                 class="text-sm text-neutral-600"
                             >
-                                Saved.
+                                Saved.ssssssss
                             </p>
                         </Transition>
                     </div>
